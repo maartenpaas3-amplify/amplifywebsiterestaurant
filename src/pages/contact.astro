@@ -13,7 +13,18 @@ const { primaryKeyword, name, city } = siteConfig.identity;
   path="/contact"
 >
   <PageHero kicker={city} title="Contact & horaires" image="/images/gallery-curries.jpg" alt={`Plats de ${name}`} />
-  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20 grid sm:grid-cols-2 gap-12">
+
+  <!-- Typographic moment instead of jumping straight from the photo hero
+       into a form-like two-column block — same unboxed pull-quote language
+       used on Home/Avis, single-sourced from siteConfig so it can't drift
+       from the real opening hours. -->
+  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-6" data-reveal>
+    <p class="pull-quote max-w-2xl">
+      Une question, une envie de curry ce soir ? {siteConfig.contact.openingHours}.
+    </p>
+  </section>
+
+  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-4 pb-20 grid sm:grid-cols-2 gap-12">
     <div>
       <div class="space-y-5 text-sm sm:text-base" style="color: var(--color-text-primary)">
         <div>

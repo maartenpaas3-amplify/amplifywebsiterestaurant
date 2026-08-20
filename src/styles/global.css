@@ -196,6 +196,54 @@ body {
 }
 
 /* ============================================================================
+   Section rhythm — before this, every section on every page sat on the
+   exact same #0B0B0C body background: hero photo aside, the whole site
+   scrolled as one uninterrupted black rectangle. This is the fix: wrap a
+   full-bleed section in `.section-tint` to lift it one step to
+   --color-surface, and alternate it with plain sections down a page so
+   scrolling gets a visual cadence instead of "more of the same black".
+   Used deliberately sparingly — not every section — so it still reads as
+   intentional pacing rather than stripes.
+   ============================================================================ */
+.section-tint {
+  background-color: var(--color-surface);
+}
+
+/* Menu item micro-interaction — a thin gold rule draws in under the dish
+   name on hover/focus of its card, and the price gives a small nudge.
+   Nothing fancy, but it's the difference between a menu that reads as a
+   static list and one that feels responsive when you touch it. */
+.menu-item-name {
+  position: relative;
+  display: inline-block;
+}
+.menu-item-name::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-accent);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-lift:hover .menu-item-name::after,
+.card-lift:focus-within .menu-item-name::after {
+  width: 100%;
+}
+.menu-item-price {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+.card-lift:hover .menu-item-price,
+.card-lift:focus-within .menu-item-price {
+  transform: translateX(-3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-item-name::after { transition: none; }
+  .menu-item-price { transition: none; }
+}
+
+/* ============================================================================
    Keyboard focus — every interactive element on this site (buttons, cards,
    links, the header nav) only had a :hover state before this. A keyboard or
    screen-reader user tabbing through the page got zero visual feedback on
