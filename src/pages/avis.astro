@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import PageHero from '../components/PageHero.astro';
+import Ornament from '../components/Ornament.astro';
 import { siteConfig } from '../config/site.config';
 import { testimonials, aggregateRating } from '../content/testimonials';
 
@@ -51,19 +52,22 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
        "wow" moment before the page drops into the regular grid of shorter
        cards below, instead of every review getting equal, flat weight. -->
   {testimonials[0] && (
-    <section class="max-w-3xl mx-auto px-5 sm:px-8 pb-16 text-center" data-reveal>
-      <span class="font-display block text-6xl leading-none mb-2" style="color: var(--color-accent)">"</span>
-      <p class="pull-quote -mt-6">{testimonials[0].text}</p>
-      <p class="mt-6 text-sm font-bold" style="color: var(--color-accent)">
+    <section class="relative max-w-3xl mx-auto px-5 sm:px-8 pb-16 text-center overflow-hidden" data-reveal>
+      <div class="section-glow" style="width: 360px; height: 360px; background: var(--color-primary); opacity: 0.12; left: -120px; top: -40px;"></div>
+      <span class="relative font-display block text-6xl leading-none mb-2" style="color: var(--color-accent)">"</span>
+      <p class="relative pull-quote -mt-6">{testimonials[0].text}</p>
+      <p class="relative mt-6 text-sm font-bold" style="color: var(--color-accent)">
         {testimonials[0].name} · {stars(testimonials[0].rating)}
       </p>
       {testimonials[0].sourceUrl && (
-        <a href={testimonials[0].sourceUrl} target="_blank" rel="noreferrer" class="inline-block mt-3 text-sm font-bold" style="color: var(--color-text-muted)">
+        <a href={testimonials[0].sourceUrl} target="_blank" rel="noreferrer" class="relative inline-block mt-3 text-sm font-bold" style="color: var(--color-text-muted)">
           Voir tous les avis sur Tripadvisor →
         </a>
       )}
     </section>
   )}
+
+  <Ornament />
 
   <section class="max-w-4xl mx-auto px-5 sm:px-8 pb-20 grid sm:grid-cols-2 gap-5">
     {testimonials.slice(1).map((t, i) => (

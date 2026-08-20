@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
+import Ornament from '../components/Ornament.astro';
 import { siteConfig } from '../config/site.config';
 import { aggregateRating } from '../content/testimonials';
 
@@ -66,4 +67,6 @@ const { primaryKeyword, name, city } = siteConfig.identity;
       ))}
     </div>
   </section>
+
+  <Ornament />
 </Layout>

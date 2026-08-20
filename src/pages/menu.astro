@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import PageHero from '../components/PageHero.astro';
+import Ornament from '../components/Ornament.astro';
 import { siteConfig } from '../config/site.config';
 import { orderCtaLabel } from '../lib/nav';
 import { menuHighlights } from '../content/menu-highlights';
@@ -39,7 +40,7 @@ const menuJsonLd = {
   />
   <section class="max-w-7xl mx-auto px-5 sm:px-8 pt-8 pb-8">
     <div>
-      <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+      <Button href={orderCtaLabel.href} external variant="cta">{orderCtaLabel.label}</Button>
     </div>
   </section>
 
@@ -79,8 +80,9 @@ const menuJsonLd = {
     </section>
   ))}
 
+  <Ornament />
   <section class="max-w-7xl mx-auto px-5 sm:px-8 py-16 text-center">
     <p class="text-sm mb-4" style="color: var(--color-text-muted)">Prêt à commander ?</p>
-    <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+    <Button href={orderCtaLabel.href} external variant="cta">{orderCtaLabel.label}</Button>
   </section>
 </Layout>

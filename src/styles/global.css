@@ -156,3 +156,25 @@ body {
   pointer-events: none;
   filter: grayscale(0.2);
 }
+
+/* Ambient section glow — a soft, blurred color blob sitting behind a
+   section so the transition between two flat-color sections isn't a hard
+   rectangular cut. Positioned per-use via inline style (top/left/etc);
+   this class only sets the shared look. Pick primary (red) or accent
+   (gold) per section so the unused brand red actually shows up somewhere
+   besides the logo. */
+.section-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Left-accent pull-quote variant — a thin red rule instead of the bare
+   gold quotation mark, used where a second review/quote appears on the
+   same page as the primary pull-quote so they don't feel identical. */
+.pull-quote-accent {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1.25rem;
+}
