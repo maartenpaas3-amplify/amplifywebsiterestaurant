@@ -1,28 +1,62 @@
 ---
 import { siteConfig } from '../config/site.config';
 import { orderCtaLabel } from '../lib/nav';
+import { aggregateRating } from '../content/testimonials';
 import Button from './Button.astro';
 
+// Menu and Avis are the two links that actually move the business (the
+// order flow lives behind Menu, and Avis is the page carrying the real
+// Tripadvisor proof) — everything else in the footer nav had identical
+// visual weight before, so nothing pulled the eye toward what mattered.
 const nav = [
-  { href: '/', label: 'Accueil' },
-  { href: '/menu', label: 'Menu' },
-  { href: '/a-propos', label: 'À propos' },
-  { href: '/avis', label: 'Avis' },
-  { href: '/faq', label: 'FAQ' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'Accueil', emphasis: false },
+  { href: '/menu', label: 'Menu', emphasis: true },
+  { href: '/a-propos', label: 'À propos', emphasis: false },
+  { href: '/avis', label: 'Avis', emphasis: true },
+  { href: '/faq', label: 'FAQ', emphasis: false },
+  { href: '/contact', label: 'Contact', emphasis: false },
 ];
+
+const ratingRounded = Math.round(Number(aggregateRating.ratingValue));
+const ratingStars = '★'.repeat(ratingRounded) + '☆'.repeat(5 - ratingRounded);
 ---
-<footer style="background-color: var(--color-surface); border-top: 1px solid var(--color-border)">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14 grid sm:grid-cols-3 gap-10">
+<footer class="relative overflow-hidden" style="background-color: var(--color-surface); border-top: 1px solid var(--color-border)">
+  <!-- The footer used to be flat #131315 with a thin top border — the one
+       place on the site with zero texture even though every other section
+       by now has a glow, a watermark or a tint. This gives the closing
+       section the same weight as the opening one instead of the page just
+       "stopping". -->
+  <img
+    src="/images/logo-mark.png"
+    alt=""
+    aria-hidden="true"
+    class="mark-watermark w-[22rem] h-[22rem] -right-24 -bottom-28 hidden sm:block"
+  />
+  <div class="section-glow" style="width: 320px; height: 320px; background: var(--color-primary); opacity: 0.05; left: -110px; bottom: -110px;"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-8 py-14 grid sm:grid-cols-3 gap-10">
     <div>
-      <span class="text-[11px] font-bold uppercase tracking-[0.2em]" style="color: var(--color-accent)">
-        {siteConfig.identity.city}
-      </span>
-      <h3 class="font-display text-2xl font-semibold mt-1.5" style="color: var(--color-text-primary)">
-        {siteConfig.identity.name}
-      </h3>
-      <p class="text-sm mt-2 max-w-xs" style="color: var(--color-text-muted)">
+      <div class="flex items-center gap-3">
+        <img src="/images/logo-mark.png" alt="" width="44" height="44" class="w-11 h-11 rounded-full shrink-0" />
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em]" style="color: var(--color-accent)">
+            {siteConfig.identity.city}
+          </span>
+          <h3 class="font-display text-2xl font-semibold" style="color: var(--color-text-primary)">
+            {siteConfig.identity.name}
+          </h3>
+        </div>
+      </div>
+      <p class="text-sm mt-3 max-w-xs" style="color: var(--color-text-muted)">
         {siteConfig.identity.tagline}
+      </p>
+      <!-- Trust signal, repeated here quietly — the badge on Home is above
+           the fold where a first-time visitor sees it; this is the last
+           thing someone sees before they leave the site, real proof one
+           more time instead of nothing. -->
+      <p class="mt-3 flex items-center gap-1.5 text-xs font-bold" style="color: var(--color-accent)">
+        <span style="letter-spacing: 1px">{ratingStars}</span>
+        {aggregateRating.ratingValue}/5 · {aggregateRating.reviewCount} avis Tripadvisor
       </p>
       <div class="mt-5 flex flex-wrap items-center gap-3">
         <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
@@ -72,14 +106,18 @@ const nav = [
 
     <nav class="flex flex-col gap-2.5 sm:items-end text-sm">
       {nav.map((item) => (
-        <a href={item.href} style="color: var(--color-text-muted)" class="hover:underline">
+        <a
+          href={item.href}
+          style={`color: ${item.emphasis ? 'var(--color-accent)' : 'var(--color-text-muted)'}`}
+          class={`hover:underline ${item.emphasis ? 'font-bold' : ''}`}
+        >
           {item.label}
         </a>
       ))}
     </nav>
   </div>
 
-  <div style="border-top: 1px solid var(--color-border)">
+  <div class="relative" style="border-top: 1px solid var(--color-border)">
     <p class="text-center text-[11px] py-4" style="color: var(--color-text-muted)">
       {siteConfig.identity.name} · {new Date().getFullYear()} · Built by Amplify Growth Studio ·{' '}
       <a href="/confidentialite" class="hover:underline">Confidentialité</a>
