@@ -65,5 +65,28 @@ const colorOverrides = `:root{--color-primary:${siteConfig.colors.primary};--col
       );
       document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
     </script>
+
+    <script>
+      // Magnetic pointer-follow for [data-magnetic] elements (the order
+      // CTA button) — ported from the order-engine's MagneticButton idea
+      // without framer-motion: the button nudges a few px toward the
+      // cursor as it approaches, snaps back on leave. This is what "visual
+      // power" without extra color/ornament looks like — the element
+      // itself feels alive to touch instead of announcing itself with a
+      // louder paint job.
+      const strength = 18;
+      document.querySelectorAll('[data-magnetic]').forEach((el) => {
+        const button = el;
+        button.addEventListener('mousemove', (e) => {
+          const rect = button.getBoundingClientRect();
+          const relX = (e.clientX - rect.left - rect.width / 2) / rect.width;
+          const relY = (e.clientY - rect.top - rect.height / 2) / rect.height;
+          button.style.transform = `translate(${relX * strength}px, ${relY * strength}px)`;
+        });
+        button.addEventListener('mouseleave', () => {
+          button.style.transform = 'translate(0, 0)';
+        });
+      });
+    </script>
   </body>
 </html>

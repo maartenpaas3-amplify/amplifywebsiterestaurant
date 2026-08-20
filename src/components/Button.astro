@@ -1,18 +1,11 @@
 ---
-// The studio's one primary-action button — same "quiet luxury" outline
-// treatment as the order-landing-page engine's MagneticButton: transparent
-// at rest, a solid fill sweeps in from the left on hover/press, label
-// switches to background color to stay legible. No framer-motion runtime
-// here (static site, no JS by default) — the exact same visual result is
-// achieved with a pure CSS transition on a pseudo-element instead.
-// `cta` is a new third variant (Point 5 of the "give it more flair" pass):
-// the outline/filled pair reads as quiet-luxury-minimal, correct for most
-// buttons, but the ONE button that makes the restaurant money — the order
-// CTA — was disappearing into that same quiet treatment. `cta` gives it a
-// red-to-gold gradient (finally putting the brand's actual primary red to
-// use instead of it sitting unused in the token file) and a soft glow on
-// hover, so it reads as the obvious next click instead of one option among
-// equals.
+// Reverted the red-gradient `cta` variant — it read as a coupon-site
+// "BUY NOW" sticker, not premium, and clashed with "strak" (the client's
+// own word). Back to gold-only, but the order CTA now gets real motion
+// instead of color to stand out: a magnetic pointer-follow (see the script
+// in Layout.astro, ported from the order-engine's MagneticButton — same
+// idea, no framer-motion, ~15 lines of vanilla JS) plus the existing
+// fill-sweep. Movement instead of paint is the whole point of this pass.
 interface Props {
   href: string;
   external?: boolean;
@@ -20,14 +13,15 @@ interface Props {
   class?: string;
 }
 const { href, external = false, variant = 'outline', class: className = '' } = Astro.props;
-const variantClass = variant === 'outline' ? 'amp-btn-outline' : variant === 'cta' ? 'amp-btn-cta' : 'amp-btn-filled';
+const variantClass = variant === 'outline' ? 'amp-btn-outline' : variant === 'cta' ? 'amp-btn-cta amp-btn-outline' : 'amp-btn-filled';
 ---
 <a
   href={href}
   target={external ? '_blank' : undefined}
   rel={external ? 'noreferrer' : undefined}
+  data-magnetic={variant === 'cta' ? 'true' : undefined}
   class:list={[
-    'amp-btn relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg px-7 py-4 text-sm font-bold tracking-wide transition-all duration-200',
+    'amp-btn relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-3.5 text-sm font-bold tracking-wide transition-colors duration-200',
     variantClass,
     className,
   ]}
@@ -35,7 +29,7 @@ const variantClass = variant === 'outline' ? 'amp-btn-outline' : variant === 'ct
   <span class="relative z-10 inline-flex items-center gap-2">
     <slot />
     {variant === 'cta' && (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="amp-btn-arrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="amp-btn-arrow">
         <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     )}
@@ -74,14 +68,15 @@ const variantClass = variant === 'outline' ? 'amp-btn-outline' : variant === 'ct
     filter: brightness(1.08);
   }
 
+  /* .amp-btn-cta stacks on top of .amp-btn-outline (same gold look, same
+     fill-sweep) — the only addition is the magnetic pointer-follow, driven
+     by the shared script in Layout.astro via data-magnetic, plus a touch
+     more padding and the sliding arrow so it still reads as the primary
+     action without needing a different color to do it. */
   .amp-btn-cta {
-    background: linear-gradient(100deg, var(--color-primary) 0%, var(--color-primary) 35%, var(--color-accent) 100%);
-    color: #fff;
-    box-shadow: 0 4px 18px color-mix(in srgb, var(--color-primary) 35%, transparent);
-  }
-  .amp-btn-cta:hover {
-    box-shadow: 0 6px 26px color-mix(in srgb, var(--color-primary) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--color-accent) 60%, transparent);
-    transform: translateY(-1px);
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    transition: transform 0.15s ease-out, color 0.2s ease;
   }
   .amp-btn-arrow {
     transition: transform 0.2s ease;
