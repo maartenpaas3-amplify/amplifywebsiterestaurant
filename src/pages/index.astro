@@ -102,16 +102,18 @@ const highlightItems = menuHighlights.flatMap((c) => c.items).slice(0, 4);
 
   <Ornament />
 
-  <!-- Signature spotlight — the one deliberately asymmetric, full-bleed
-       moment on the page. Every other section on this site (and every
-       other page) is a centered max-w-7xl container of same-size boxes;
-       repeating that rhythm forever reads as flat no matter how polished
-       each box is. This breaks the grid on purpose, the same way the
-       order-engine's ParallaxHero breaks from centered-hero convention —
-       full-width photo on one side, a real editorial pull-quote on the
-       other, no card/border around either. -->
-  <section class="grid sm:grid-cols-2 min-h-[420px] sm:h-[70vh]">
-    <div class="photo-frame relative overflow-hidden" data-reveal="scale">
+  <!-- Signature spotlight v2 — the split photo/text-panel version read as
+       two flat boxes stitched together ("raar en saai"). This is the "wow"
+       pick from the 3 options: one continuous full-bleed image with a slow
+       cinematic Ken Burns zoom (pure CSS, no video asset needed — this is
+       the wow-factor option that's actually buildable with the photos we
+       have), text overlaid directly on the image via a gradient scrim
+       instead of sitting in its own flat-color panel. Deliberately still
+       ONE dish (not a crossfade between different dishes) — the caption is
+       specific to the biryani, so the photo has to match it the whole
+       time. -->
+  <section class="relative min-h-[480px] sm:h-[78vh] overflow-hidden" data-reveal="scale">
+    <div class="ken-burns absolute inset-0">
       <img
         src="/images/gallery-biryani.jpg"
         alt={`Biryani et sélection de plats servis chez ${siteConfig.identity.name}`}
@@ -119,8 +121,10 @@ const highlightItems = menuHighlights.flatMap((c) => c.items).slice(0, 4);
         loading="lazy"
       />
     </div>
-    <div class="flex items-center px-5 sm:px-12 py-12 sm:py-0" style="background-color: var(--color-surface)">
-      <div data-reveal>
+    <div class="absolute inset-0" style="background: linear-gradient(100deg, rgba(11,11,12,0.92) 0%, rgba(11,11,12,0.55) 42%, rgba(11,11,12,0.15) 68%, transparent 100%)"></div>
+
+    <div class="relative z-10 h-full flex items-center max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-md">
         <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-4" style="color: var(--color-accent)">Plat signature</span>
         <p class="pull-quote">
           Un Hyderabadi Dum Biryani mijoté à l'étouffée, servi avec pani puri et naan tout juste sorti du tandoor.
@@ -179,16 +183,93 @@ const highlightItems = menuHighlights.flatMap((c) => c.items).slice(0, 4);
     ))}
   </section>
 
-  <!-- Testimonial teaser — deliberately unboxed: after three sections of
-       cards-in-a-grid, a large pull-quote with no border/background reads
-       as an editorial break rather than "one more grey box". -->
-  <section class="relative max-w-3xl mx-auto px-5 sm:px-8 py-16 sm:py-28 text-center overflow-hidden" data-reveal>
+  <!-- Testimonial carousel — the single static quote read as "text
+       floating in an empty room" ("raar en saai"). This is the wow-factor
+       pick: cycles through ALL real reviews (not just one), each with a
+       gold monogram instead of a generic quotation mark, auto-advancing
+       with dot controls. No fabricated customer photos — the monogram is
+       honest (just the reviewer's first initial) rather than pretending we
+       have portraits we don't. Pure vanilla JS, ~20 lines, no framework. -->
+  <section class="relative max-w-3xl mx-auto px-5 sm:px-8 py-16 sm:py-28 overflow-hidden" data-reveal>
     <div class="section-glow" style="width: 380px; height: 380px; background: var(--color-accent); opacity: 0.1; right: -140px; bottom: -60px;"></div>
-    <span class="relative font-display block text-6xl leading-none mb-2" style="color: var(--color-accent)">"</span>
-    <p class="relative pull-quote -mt-6">
-      {testimonials[0].text}
-    </p>
-    <p class="relative mt-6 text-sm font-bold" style="color: var(--color-accent)">— {testimonials[0].name}</p>
-    <a href="/avis" class="relative inline-block mt-4 text-sm font-bold" style="color: var(--color-accent)">Lire tous les avis →</a>
+
+    <div class="relative testimonial-carousel">
+      <div class="testimonial-track">
+        {testimonials.map((t, i) => (
+          <div class="testimonial-slide text-center" data-slide={i}>
+            <span
+              class="inline-flex items-center justify-center w-12 h-12 rounded-full font-display font-bold text-lg mb-5"
+              style="background: var(--color-surface); border: 1.5px solid var(--color-accent); color: var(--color-accent)"
+            >
+              {t.name.charAt(0)}
+            </span>
+            <p class="pull-quote">{t.text}</p>
+            <p class="mt-6 text-sm font-bold" style="color: var(--color-accent)">— {t.name}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="testimonial-dots flex items-center justify-center gap-2 mt-8">
+        {testimonials.map((_, i) => (
+          <button
+            type="button"
+            class="testimonial-dot w-2 h-2 rounded-full transition-all"
+            style="background-color: var(--color-border)"
+            data-dot={i}
+            aria-label={`Avis ${i + 1}`}
+          ></button>
+        ))}
+      </div>
+
+      <p class="text-center mt-4">
+        <a href="/avis" class="text-sm font-bold" style="color: var(--color-accent)">Lire tous les avis →</a>
+      </p>
+    </div>
   </section>
+
+  <style>
+    .testimonial-track { position: relative; min-height: 220px; }
+    .testimonial-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .testimonial-slide.is-active {
+      position: relative;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .testimonial-dot.is-active { background-color: var(--color-accent) !important; width: 22px; }
+  </style>
+
+  <script>
+    document.querySelectorAll<HTMLElement>('.testimonial-carousel').forEach((carousel) => {
+      const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.testimonial-slide'));
+      const dots = Array.from(carousel.querySelectorAll<HTMLElement>('.testimonial-dot'));
+      let active = 0;
+      let timer: ReturnType<typeof setInterval>;
+
+      function show(index: number) {
+        active = (index + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === active));
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === active));
+      }
+      function start() {
+        timer = setInterval(() => show(active + 1), 6000);
+      }
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          show(i);
+          clearInterval(timer);
+          start();
+        });
+      });
+      show(0);
+      start();
+    });
+  </script>
 </Layout>

@@ -52,6 +52,7 @@ export interface SiteConfig {
     mapsUrl?: string;
     openingHours: string;
     instagramUrl?: string;
+    facebookUrl?: string;
   };
   ordering: {
     // The separate order-landing-page deploy (React/Vite engine). Every
@@ -87,6 +88,7 @@ export const siteConfig: SiteConfig = {
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=29+Jbel+El+Ayachi%2C+Rabat+10080',
     openingHours: 'Ouvert tous les jours : 13:00 - 23:00',
     instagramUrl: 'https://www.instagram.com/indianflavors.ma/',
+    facebookUrl: 'https://www.facebook.com/indianflavors.ma/',
   },
   ordering: {
     orderSiteUrl: 'https://indianflavor.pages.dev',

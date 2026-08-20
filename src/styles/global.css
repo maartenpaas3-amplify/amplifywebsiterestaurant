@@ -103,6 +103,22 @@ body {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
+/* Ken Burns — a continuous, very slow zoom on a full-bleed photo (the
+   signature-dish spotlight on Home). No video asset available, so this is
+   what "cinematic" looks like with a single static photo: 18s, ease, loops
+   forever, small enough amplitude (1 → 1.12) that it reads as deliberate
+   motion design rather than an obvious loop. */
+.ken-burns img {
+  animation: kenBurns 18s ease-in-out infinite alternate;
+}
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns img { animation: none; }
+}
+
 /* Photo zoom: the img inside gets a slow, subtle scale on hover of its
    containing `.photo-frame` — used on the gallery grid and category photo
    banners so images feel alive instead of static tiles. */
