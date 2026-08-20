@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Seo from '../components/Seo.astro';
+import { siteConfig } from '../config/site.config';
 import '../styles/global.css';
 
 interface Props {
@@ -13,6 +14,14 @@ interface Props {
   noindex?: boolean;
 }
 const { title, description, path, ogImage, jsonLd, noindex } = Astro.props;
+
+// Wires site.config.ts's `colors` into the actual CSS custom properties
+// global.css's :root block declares — WITHOUT this, changing colors in
+// site.config.ts would silently do nothing (the exact same class of bug the
+// order-landing-page engine had with its typography fields before that got
+// fixed). This is what makes site.config.ts genuinely the one file you edit
+// per client for color, not just documentation that looks like it works.
+const colorOverrides = `:root{--color-primary:${siteConfig.colors.primary};--color-accent:${siteConfig.colors.accent};--color-background:${siteConfig.colors.background};}`;
 ---
 <!doctype html>
 <html lang="fr">
@@ -21,6 +30,7 @@ const { title, description, path, ogImage, jsonLd, noindex } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <Seo title={title} description={description} path={path} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
+    <style set:html={colorOverrides} />
     <!-- Fonts: same pair as the order-landing-page engine (Bodoni Moda display
          + Inter body) so the two sites read as one family. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
