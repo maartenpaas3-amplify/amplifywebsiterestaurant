@@ -7,9 +7,13 @@
 // site and shipping a JS framework runtime just for this would undercut the
 // entire reason this project is Astro (fast, crawlable, no hydration tax).
 //
-// Also unchanged from the order engine: no logo/icon, pure typographic
-// wordmark with an accent-colored lettrine — the studio's identity mark is
-// always type, never a raster file.
+// Departure from the order-engine convention: that engine deliberately
+// never uses a client logo file (quality varies too much client to client).
+// For Indian Flavors specifically, the client's actual gold emblem (cropped
+// from their real storefront photography, not a vector supplied by them) is
+// strong enough to be worth the exception — a real mark reads as more
+// "wow" than typography alone. If a future client's logo photography isn't
+// this clean, fall back to the typographic-only header.
 import { siteConfig } from '../config/site.config';
 import { orderCtaLabel } from '../lib/nav';
 
@@ -26,12 +30,10 @@ const currentPath = Astro.url.pathname;
 ---
 <header id="site-header" class="sticky top-0 z-40 transition-all duration-300" data-scrolled="false">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-    <a href="/" class="flex items-baseline min-w-0 shrink">
-      <span class="font-display font-bold text-2xl sm:text-[1.75rem] leading-none shrink-0" style="color: var(--color-accent)">
-        {siteConfig.identity.name.charAt(0)}
-      </span>
-      <span class="font-display font-semibold text-base sm:text-lg truncate ml-0.5" style="color: var(--color-text-primary)">
-        {siteConfig.identity.name.slice(1)}
+    <a href="/" class="flex items-center gap-2 min-w-0 shrink">
+      <img src="/images/logo-mark.png" alt="" width="36" height="36" class="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full" />
+      <span class="font-display font-semibold text-base sm:text-lg truncate" style="color: var(--color-text-primary)">
+        {siteConfig.identity.name}
       </span>
     </a>
 

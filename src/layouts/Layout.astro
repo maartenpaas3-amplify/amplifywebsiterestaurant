@@ -47,5 +47,23 @@ const colorOverrides = `:root{--color-primary:${siteConfig.colors.primary};--col
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Sitewide scroll-reveal — see the [data-reveal] rules in global.css
+      // for what this toggles. One observer, reused for every element with
+      // the attribute, on every page (no per-page wiring needed).
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>

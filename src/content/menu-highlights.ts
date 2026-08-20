@@ -19,11 +19,23 @@ export interface MenuHighlightItem {
 export interface MenuHighlightCategory {
   label: string;
   items: MenuHighlightItem[];
+  // Real photo for this category — ONLY set when a genuine, accurate match
+  // exists among the client's supplied photography. Deliberately left
+  // undefined for categories with no honest match (Spécialités Tandoori,
+  // Hyderabadi Dum Biryani, Boissons Fraîches) rather than reusing an
+  // unrelated dish photo under the wrong category label — see the honesty
+  // principle already documented for aggregateRating in testimonials.ts;
+  // the same standard applies here. Ask the client for more per-category
+  // shots to fill the gaps instead of faking a match.
+  image?: string;
+  imageAlt?: string;
 }
 
 export const menuHighlights: MenuHighlightCategory[] = [
   {
     label: 'Entrées Végétariennes',
+    image: '/images/gallery-spread.jpg',
+    imageAlt: 'Pani puri et entrées indiennes servies en accompagnement',
     items: [
       { name: 'Vegetable Samosa (2 pcs)', description: 'Pâtisserie indienne croustillante farcie de légumes aromatiques épicés.', priceMAD: 40 },
       { name: 'Vegetable Pani Puri (6 pcs)', description: "Boules croustillantes farcies d'eau acidulée épicée et de chutneys.", priceMAD: 45 },
@@ -38,6 +50,8 @@ export const menuHighlights: MenuHighlightCategory[] = [
   },
   {
     label: 'Hyderabadi Dum Biryani',
+    image: '/images/gallery-biryani.jpg',
+    imageAlt: 'Biryani, pani puri et naan servis à table',
     items: [
       { name: 'Lamb Biryani', description: "Riz basmati parfumé mi-cuit avec de l'agneau tendre et épices douces.", priceMAD: 110 },
       { name: 'Chicken Biryani', description: "Spécialité d'Hyderabad : poulet et riz basmati cuits à l'étouffée.", priceMAD: 95 },
@@ -45,6 +59,8 @@ export const menuHighlights: MenuHighlightCategory[] = [
   },
   {
     label: 'Plats Principaux',
+    image: '/images/gallery-curries.jpg',
+    imageAlt: 'Currys mijotés servis en plat principal',
     items: [
       { name: 'Butter Chicken', description: 'Incontournable poulet mijoté dans une sauce veloutée au beurre et tomate.', priceMAD: 80 },
       { name: 'Chicken Tikka Masala', description: 'Poulet tandoori grillé servi dans une sauce masala crémeuse.', priceMAD: 80 },
@@ -52,6 +68,8 @@ export const menuHighlights: MenuHighlightCategory[] = [
   },
   {
     label: 'Naan, Riz & Nouilles',
+    image: '/images/gallery-naan.jpg',
+    imageAlt: 'Naan fait maison, cuit au tandoor',
     items: [
       { name: 'Garlic Naan', description: 'Naan chaud parfumé à l\'ail frais haché et coriandre.', priceMAD: 29 },
       { name: 'Cheese Naan', description: 'Pain tandoori moelleux généreusement fourré au fromage.', priceMAD: 35 },

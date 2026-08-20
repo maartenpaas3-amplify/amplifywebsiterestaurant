@@ -17,8 +17,18 @@ const { primaryKeyword, name, city } = siteConfig.identity;
     image="/images/interior-1.jpg"
     alt={`Intérieur du ${primaryKeyword} ${name}`}
   />
-  <section class="max-w-3xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20">
-    <div class="space-y-5 text-sm sm:text-base leading-relaxed" style="color: var(--color-text-muted)">
+  <section class="relative max-w-3xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20 overflow-hidden">
+    <!-- Large faded emblem behind the copy — the real gold mark, not a
+         generic decorative shape, used at a scale it can never appear at
+         in the header. A quiet "wow" texture instead of another flat
+         paragraph block. -->
+    <img
+      src="/images/logo-mark.png"
+      alt=""
+      aria-hidden="true"
+      class="mark-watermark w-[26rem] h-[26rem] -right-32 -top-16 sm:-right-24"
+    />
+    <div class="relative space-y-5 text-sm sm:text-base leading-relaxed" style="color: var(--color-text-muted)" data-reveal>
       <p>
         {name} est né d'une conviction simple : {city} méritait un {primaryKeyword} qui ne transige ni sur les
         épices, ni sur les techniques de cuisson traditionnelles. Pas de recettes édulcorées pour le marché local —
@@ -36,15 +46,22 @@ const { primaryKeyword, name, city } = siteConfig.identity;
       </p>
     </div>
 
-    <div class="mt-10 grid sm:grid-cols-3 gap-6">
+    <!-- Oversized, unboxed numbers instead of three identical grey tiles —
+         same information, but the numbers themselves now carry the visual
+         weight instead of a card border doing the work. -->
+    <div class="relative mt-14 grid sm:grid-cols-3 gap-8 sm:gap-6">
       {[
         { n: '10+', l: "ans d'expérience en cuisine indienne" },
         { n: '100%', l: 'plats préparés à la commande' },
         { n: `${aggregateRating.ratingValue}/5`, l: 'note moyenne de nos clients' },
-      ].map((stat) => (
-        <div class="rounded-xl p-5" style="background-color: var(--color-surface); border: 1px solid var(--color-border)">
-          <p class="font-display text-3xl font-semibold" style="color: var(--color-accent)">{stat.n}</p>
-          <p class="text-xs mt-1" style="color: var(--color-text-muted)">{stat.l}</p>
+      ].map((stat, i) => (
+        <div
+          class="pb-6 sm:pb-0 sm:pl-6"
+          style={`border-bottom: 1px solid var(--color-border); border-left: ${i === 0 ? 'none' : '1px solid var(--color-border)'}; transition-delay: ${i * 100}ms`}
+          data-reveal
+        >
+          <p class="stat-huge">{stat.n}</p>
+          <p class="text-xs mt-2" style="color: var(--color-text-muted)">{stat.l}</p>
         </div>
       ))}
     </div>

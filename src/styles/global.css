@@ -59,3 +59,100 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in { animation: fadeIn 0.4s ease-out both; }
+
+/* ============================================================================
+   Scroll-reveal + hover depth — sitewide motion system.
+   Before this, every page was 100% static: no scroll animation, flat cards,
+   zero image motion anywhere except the header. That reads as "strak maar
+   saai" (sleek but boring) fast, especially on text-heavy pages like Menu
+   and À propos. This is the fix: a tiny vanilla IntersectionObserver (see
+   the script in Layout.astro) adds `.is-visible` to any `[data-reveal]`
+   element the moment it scrolls into view; the CSS here just defines the
+   before/after state. No framework, no bundle cost — same philosophy as the
+   header's scroll script.
+   ============================================================================ */
+/* NOTE: this exact transition list is duplicated verbatim on .card-lift
+   below. Elements often carry BOTH [data-reveal] and .card-lift — two
+   separate `transition` shorthand rules on the same element don't merge,
+   the later one in source order wins outright and silently drops the
+   other's properties. Keeping both lists identical sidesteps that instead
+   of relying on rule order. If you add a new transitioned property to
+   either, add it to both. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* Card lift: applied to the repeating "boxed" cards across the site (menu
+   items, testimonials, stat tiles, highlight cards) so hovering one gives a
+   small, consistent sense of depth instead of a totally flat surface. */
+.card-lift {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Photo zoom: the img inside gets a slow, subtle scale on hover of its
+   containing `.photo-frame` — used on the gallery grid and category photo
+   banners so images feel alive instead of static tiles. */
+.photo-frame { overflow: hidden; }
+.photo-frame img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.photo-frame:hover img {
+  transform: scale(1.06);
+}
+
+/* Photo variant of [data-reveal]: scales in from slightly small + faded
+   instead of rising from below — used on images so a grid of photos and
+   text doesn't move in perfect unison (part of fixing "every element does
+   the exact same fade" flatness). */
+[data-reveal='scale'] {
+  transform: scale(0.94);
+}
+[data-reveal='scale'].is-visible {
+  transform: scale(1);
+}
+
+/* Oversized, unboxed stat/number moments — used on À propos in place of
+   the old boxed tiles, and anywhere else a single number needs to carry
+   real typographic weight instead of sitting in a small card. */
+.stat-huge {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1;
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  color: var(--color-accent);
+}
+
+/* Unboxed pull-quote — a single testimonial or line of copy set large and
+   loose, no card/border/background, so it reads as an editorial moment
+   rather than another grey box in a grid of identical grey boxes. */
+.pull-quote {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.25;
+  font-size: clamp(1.5rem, 3.4vw, 2.75rem);
+  color: var(--color-text-primary);
+}
+
+/* Large faded background wordmark — a big, low-opacity copy of the gold
+   emblem sitting behind a section's text. Real weight without competing
+   with the foreground content for attention. */
+.mark-watermark {
+  position: absolute;
+  opacity: 0.08;
+  pointer-events: none;
+  filter: grayscale(0.2);
+}
