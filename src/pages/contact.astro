@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import PageHero from '../components/PageHero.astro';
 import { siteConfig } from '../config/site.config';
 import { orderCtaLabel } from '../lib/nav';
 
@@ -11,13 +12,9 @@ const { primaryKeyword, name, city } = siteConfig.identity;
   description={`Adresse, téléphone et horaires de ${name}, ${primaryKeyword} à ${city}. ${siteConfig.contact.address}.`}
   path="/contact"
 >
-  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-20 grid sm:grid-cols-2 gap-12">
+  <PageHero kicker={city} title="Contact & horaires" image="/images/gallery-curries.jpg" alt={`Plats de ${name}`} />
+  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20 grid sm:grid-cols-2 gap-12">
     <div>
-      <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">{city}</span>
-      <h1 class="font-display text-3xl sm:text-5xl font-semibold mb-8" style="color: var(--color-text-primary)">
-        Contact & horaires
-      </h1>
-
       <div class="space-y-5 text-sm sm:text-base" style="color: var(--color-text-primary)">
         <div>
           <p class="font-bold text-xs uppercase tracking-wide" style="color: var(--color-text-muted)">Adresse</p>

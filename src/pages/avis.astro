@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import PageHero from '../components/PageHero.astro';
 import { siteConfig } from '../config/site.config';
 import { testimonials, aggregateRating } from '../content/testimonials';
 
@@ -39,12 +40,9 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
   path="/avis"
   jsonLd={reviewsJsonLd}
 >
-  <section class="max-w-4xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-8">
-    <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">{city}</span>
-    <h1 class="font-display text-3xl sm:text-5xl font-semibold" style="color: var(--color-text-primary)">
-      Avis clients
-    </h1>
-    <p class="mt-4 text-lg" style="color: var(--color-accent)">
+  <PageHero kicker={city} title="Avis clients" image="/images/gallery-naan.jpg" alt={`Plat servi chez ${name}`} />
+  <section class="max-w-4xl mx-auto px-5 sm:px-8 pt-10 sm:pt-12 pb-8">
+    <p class="text-lg" style="color: var(--color-accent)">
       {stars(Math.round(Number(avg)))} <span style="color: var(--color-text-muted)">{avg}/5 · {aggregateRating.reviewCount} avis</span>
     </p>
     {testimonials[0]?.sourceUrl && (

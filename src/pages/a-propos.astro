@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
 import { siteConfig } from '../config/site.config';
+import { aggregateRating } from '../content/testimonials';
 
 const { primaryKeyword, name, city } = siteConfig.identity;
 ---
@@ -9,13 +11,14 @@ const { primaryKeyword, name, city } = siteConfig.identity;
   description={`L'histoire de ${name}, ${primaryKeyword} à ${city} : recettes familiales, épices importées et cuisson au tandoor traditionnel.`}
   path="/a-propos"
 >
-  <section class="max-w-3xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-20">
-    <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">Notre histoire</span>
-    <h1 class="font-display text-3xl sm:text-5xl font-semibold" style="color: var(--color-text-primary)">
-      À propos de {name}
-    </h1>
-
-    <div class="mt-8 space-y-5 text-sm sm:text-base leading-relaxed" style="color: var(--color-text-muted)">
+  <PageHero
+    kicker="Notre histoire"
+    title={`À propos de ${name}`}
+    image="/images/interior-1.jpg"
+    alt={`Intérieur du ${primaryKeyword} ${name}`}
+  />
+  <section class="max-w-3xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20">
+    <div class="space-y-5 text-sm sm:text-base leading-relaxed" style="color: var(--color-text-muted)">
       <p>
         {name} est né d'une conviction simple : {city} méritait un {primaryKeyword} qui ne transige ni sur les
         épices, ni sur les techniques de cuisson traditionnelles. Pas de recettes édulcorées pour le marché local —
@@ -37,7 +40,7 @@ const { primaryKeyword, name, city } = siteConfig.identity;
       {[
         { n: '10+', l: "ans d'expérience en cuisine indienne" },
         { n: '100%', l: 'plats préparés à la commande' },
-        { n: '4.8/5', l: 'note moyenne de nos clients' },
+        { n: `${aggregateRating.ratingValue}/5`, l: 'note moyenne de nos clients' },
       ].map((stat) => (
         <div class="rounded-xl p-5" style="background-color: var(--color-surface); border: 1px solid var(--color-border)">
           <p class="font-display text-3xl font-semibold" style="color: var(--color-accent)">{stat.n}</p>
