@@ -84,9 +84,9 @@ export const siteConfig: SiteConfig = {
     phoneHref: 'tel:+212774447444',
     whatsappNumber: '212774447444',
     address: '29 Jbel El Ayachi, Rabat 10080',
-    mapsUrl: '',
+    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=29+Jbel+El+Ayachi%2C+Rabat+10080',
     openingHours: 'Ouvert tous les jours : 13:00 - 23:00',
-    instagramUrl: '',
+    instagramUrl: 'https://www.instagram.com/indianflavors.ma/',
   },
   ordering: {
     orderSiteUrl: 'https://indianflavor.pages.dev',

@@ -1,0 +1,30 @@
+---
+// Branded 404 — without this, a broken/old link shows the hosting
+// provider's bare default error page, which is the first thing that can
+// break the "this looks premium" impression the rest of the site works for.
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../config/site.config';
+
+const { name } = siteConfig.identity;
+---
+<Layout
+  title={`Page introuvable — ${name}`}
+  description={`Cette page n'existe pas ou plus sur le site de ${name}.`}
+  path="/404"
+  noindex
+>
+  <section class="max-w-xl mx-auto px-5 sm:px-8 pt-32 sm:pt-44 pb-24 text-center">
+    <span class="font-display block text-7xl sm:text-8xl font-semibold mb-4" style="color: var(--color-accent)">404</span>
+    <h1 class="font-display text-2xl sm:text-3xl font-semibold mb-3" style="color: var(--color-text-primary)">
+      Cette page n'existe pas
+    </h1>
+    <p class="text-sm sm:text-base mb-8" style="color: var(--color-text-muted)">
+      Le lien que vous avez suivi est peut-être incorrect ou la page a été déplacée.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <Button href="/" variant="outline">Retour à l'accueil</Button>
+      <Button href="/menu" variant="filled">Voir le menu</Button>
+    </div>
+  </section>
+</Layout>

@@ -28,7 +28,12 @@ const colorOverrides = `:root{--color-primary:${siteConfig.colors.primary};--col
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Real client logo now, not the generic placeholder letter — cropped
+         from their own storefront photography (see logo-mark.png / the
+         Header). Point 5 of the "what's still missing" pass: the browser
+         tab was still showing a plain gold "I" on black. -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <Seo title={title} description={description} path={path} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
     <style set:html={colorOverrides} />
     <!-- Fonts: same pair as the order-landing-page engine (Bodoni Moda display

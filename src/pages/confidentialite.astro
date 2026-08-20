@@ -1,0 +1,47 @@
+---
+// Minimal, honest privacy page — required the moment any tracking script
+// (Analytics, Meta Pixel) gets added, so it ships now even though nothing
+// is tracked yet. Update the second paragraph the day tracking is added —
+// don't let this page go stale and become inaccurate, which is worse than
+// not having one.
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site.config';
+
+const { name, city, primaryKeyword } = siteConfig.identity;
+---
+<Layout
+  title={`Confidentialité — ${name}`}
+  description={`Politique de confidentialité de ${name}, ${primaryKeyword} à ${city}.`}
+  path="/confidentialite"
+  noindex
+>
+  <section class="max-w-2xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-20">
+    <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">Légal</span>
+    <h1 class="font-display text-3xl sm:text-4xl font-semibold mb-8" style="color: var(--color-text-primary)">
+      Politique de confidentialité
+    </h1>
+
+    <div class="space-y-5 text-sm sm:text-base leading-relaxed" style="color: var(--color-text-muted)">
+      <p>
+        Ce site est édité par {name} ({siteConfig.contact.address}). Cette page décrit quelles données sont
+        collectées lors de votre visite et comment elles sont utilisées.
+      </p>
+      <p>
+        À ce jour, ce site n'utilise aucun cookie de suivi ni outil d'analyse (Google Analytics, pixel publicitaire
+        ou équivalent) : votre navigation n'est pas suivie. Si un tel outil est ajouté à l'avenir, cette page sera
+        mise à jour en conséquence et, le cas échéant, un bandeau de consentement sera ajouté avant toute activation.
+      </p>
+      <p>
+        Les seules données personnelles transmises le sont directement par vous, si vous choisissez de nous
+        contacter par téléphone, WhatsApp ou via le site de commande en ligne — elles servent uniquement à traiter
+        votre demande ou votre commande et ne sont pas revendues à des tiers.
+      </p>
+      <p>
+        Pour toute question concernant vos données, contactez-nous au{' '}
+        <a href={siteConfig.contact.phoneHref} class="hover:underline" style="color: var(--color-accent)">
+          {siteConfig.contact.phoneDisplay}
+        </a>.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -178,3 +178,18 @@ body {
   border-left: 3px solid var(--color-primary);
   padding-left: 1.25rem;
 }
+
+/* ============================================================================
+   Keyboard focus — every interactive element on this site (buttons, cards,
+   links, the header nav) only had a :hover state before this. A keyboard or
+   screen-reader user tabbing through the page got zero visual feedback on
+   where they were. `:focus-visible` (not plain `:focus`) so mouse clicks
+   don't show the ring, only actual keyboard/assistive navigation does.
+   ============================================================================ */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
