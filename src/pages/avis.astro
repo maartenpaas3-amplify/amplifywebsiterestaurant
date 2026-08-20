@@ -2,22 +2,25 @@
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import { siteConfig } from '../config/site.config';
-import { testimonials } from '../content/testimonials';
+import { testimonials, aggregateRating } from '../content/testimonials';
 
 const { primaryKeyword, name, city } = siteConfig.identity;
-const avg = (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1);
+const avg = aggregateRating.ratingValue;
 
 // Individual Review + AggregateRating JSON-LD, on-domain — the standing note
 // in site.config.ts explains why: AI answer engines scan review PAGES for
 // recommendations, not just the Google Business Profile listing itself.
+// aggregateRating comes from testimonials.ts's REAL, external rating — not
+// computed from the (curated, mostly-positive) selection shown below. See
+// the comment there for why that distinction matters.
 const reviewsJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
   name,
   aggregateRating: {
     '@type': 'AggregateRating',
-    ratingValue: avg,
-    reviewCount: String(testimonials.length),
+    ratingValue: aggregateRating.ratingValue,
+    reviewCount: aggregateRating.reviewCount,
   },
   review: testimonials.map((t) => ({
     '@type': 'Review',
@@ -32,7 +35,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 ---
 <Layout
   title={`Avis clients — ${primaryKeyword} à ${city} | ${name}`}
-  description={`Ce que disent nos clients de ${name}, ${primaryKeyword} à ${city} : note moyenne ${avg}/5 sur ${testimonials.length} avis vérifiés.`}
+  description={`Ce que disent nos clients de ${name}, ${primaryKeyword} à ${city} : note moyenne ${avg}/5 sur ${aggregateRating.reviewCount} avis vérifiés.`}
   path="/avis"
   jsonLd={reviewsJsonLd}
 >
@@ -42,11 +45,11 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       Avis clients
     </h1>
     <p class="mt-4 text-lg" style="color: var(--color-accent)">
-      {stars(Math.round(Number(avg)))} <span style="color: var(--color-text-muted)">{avg}/5 · {testimonials.length} avis</span>
+      {stars(Math.round(Number(avg)))} <span style="color: var(--color-text-muted)">{avg}/5 · {aggregateRating.reviewCount} avis</span>
     </p>
-    {siteConfig.social.googleReviewsUrl && (
-      <a href={siteConfig.social.googleReviewsUrl} target="_blank" rel="noreferrer" class="inline-block mt-3 text-sm font-bold" style="color: var(--color-accent)">
-        Voir tous les avis sur Google →
+    {testimonials[0]?.sourceUrl && (
+      <a href={testimonials[0].sourceUrl} target="_blank" rel="noreferrer" class="inline-block mt-3 text-sm font-bold" style="color: var(--color-accent)">
+        Voir tous les avis sur Tripadvisor →
       </a>
     )}
   </section>
@@ -58,6 +61,11 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         <p class="mt-2 text-sm leading-relaxed" style="color: var(--color-text-primary)">"{t.text}"</p>
         <p class="mt-3 text-xs font-bold" style="color: var(--color-text-muted)">
           {t.name} · {new Date(t.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}
+          {t.sourceUrl && (
+            <a href={t.sourceUrl} target="_blank" rel="noreferrer" class="ml-1 font-normal underline" style="color: var(--color-text-muted)">
+              (Tripadvisor)
+            </a>
+          )}
         </p>
       </div>
     ))}

@@ -4,7 +4,7 @@ import Button from '../components/Button.astro';
 import { siteConfig } from '../config/site.config';
 import { orderCtaLabel } from '../lib/nav';
 import { menuHighlights } from '../content/menu-highlights';
-import { testimonials } from '../content/testimonials';
+import { testimonials, aggregateRating } from '../content/testimonials';
 
 const { primaryKeyword, city } = siteConfig.identity;
 
@@ -29,8 +29,8 @@ const restaurantJsonLd = {
   priceRange: '€€',
   aggregateRating: {
     '@type': 'AggregateRating',
-    ratingValue: '4.8',
-    reviewCount: String(testimonials.length),
+    ratingValue: aggregateRating.ratingValue,
+    reviewCount: aggregateRating.reviewCount,
   },
 };
 
@@ -84,6 +84,20 @@ const highlightItems = menuHighlights.flatMap((c) => c.items).slice(0, 4);
           <p class="mt-3 font-bold" style="color: var(--color-accent)">{item.priceMAD} MAD</p>
         </div>
       ))}
+    </div>
+  </section>
+
+  <!-- Photo gallery — real photos of the food and the restaurant, not stock
+       imagery. This is deliberately placed high on the page: per the
+       standing SEO notes in site.config.ts, real original photography does
+       more for trust (E-E-A-T) than any meta tag or structured-data trick
+       combined. Three real shots today; add more here as the client
+       supplies them — this grid scales past 3 without changes. -->
+  <section class="max-w-7xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      <img src="/images/gallery-curries.jpg" alt={`Plats de ${siteConfig.identity.name}, ${primaryKeyword} à ${city}`} class="w-full aspect-square object-cover rounded-2xl col-span-2 sm:col-span-1" />
+      <img src="/images/gallery-naan.jpg" alt="Naan fait maison, cuit au tandoor" class="w-full aspect-square object-cover rounded-2xl" />
+      <img src="/images/gallery-spread.jpg" alt="Sélection d'entrées et de plats indiens" class="w-full aspect-square object-cover rounded-2xl" />
     </div>
   </section>
 

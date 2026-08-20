@@ -6,7 +6,7 @@ import tailwind from '@astrojs/tailwind';
 // as a plain constant here — update this AND site.config.ts's identity.siteUrl
 // together when publishing a client (see the big comment at the top of
 // site.config.ts for the full per-client checklist).
-const SITE_URL = 'https://example-restaurant.com';
+const SITE_URL = 'https://indianflavors.pages.dev';
 
 export default defineConfig({
   site: SITE_URL,

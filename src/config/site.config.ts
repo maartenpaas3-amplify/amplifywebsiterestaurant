@@ -67,11 +67,11 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   identity: {
-    name: 'Indian Spice Rabat',
+    name: 'Indian Flavors',
     tagline: 'Restaurant indien traditionnel au cœur de Rabat',
     city: 'Rabat',
     country: 'Maroc',
-    siteUrl: 'https://example-restaurant.com',
+    siteUrl: 'https://indianflavors.pages.dev',
     primaryKeyword: 'restaurant indien',
   },
   colors: {
@@ -80,16 +80,16 @@ export const siteConfig: SiteConfig = {
     background: '#0B0B0C',
   },
   contact: {
-    phoneDisplay: '+212 5 37 67 01 84',
-    phoneHref: 'tel:+212537670184',
-    whatsappNumber: '212600000000', // ⚠ REPLACE before going live
-    address: '6 Avenue Bin Al Ouidane, Agdal, Rabat 10090',
+    phoneDisplay: '07 74 44 74 44',
+    phoneHref: 'tel:+212774447444',
+    whatsappNumber: '212774447444',
+    address: '29 Jbel El Ayachi, Rabat 10080',
     mapsUrl: '',
-    openingHours: 'Ouvert tous les jours : 12:00 - 23:30',
+    openingHours: 'Ouvert tous les jours : 13:00 - 23:00',
     instagramUrl: '',
   },
   ordering: {
-    orderSiteUrl: 'https://order.example-restaurant.com',
+    orderSiteUrl: 'https://indianflavor.pages.dev',
   },
   social: {
     googleReviewsUrl: '',

@@ -4,7 +4,13 @@
 // engine, linked via siteConfig.ordering.orderSiteUrl). This is just enough
 // menu content, per category, to be genuinely useful to a visitor and to
 // give Google/AI crawlers real food-related text to index — the full,
-// orderable menu lives on the order site.
+// orderable menu (60+ items) lives on the order site.
+//
+// Content pulled directly from indianflavor.pages.dev's live menu (Aug
+// 2026) — real dishes/prices/descriptions, not placeholders. Category
+// labels match the order site's own category names so a customer doesn't
+// get confused seeing two different naming schemes across the two sites.
+// Only a curated subset per category, not the full list.
 export interface MenuHighlightItem {
   name: string;
   description: string;
@@ -17,29 +23,44 @@ export interface MenuHighlightCategory {
 
 export const menuHighlights: MenuHighlightCategory[] = [
   {
-    label: 'Entrées',
+    label: 'Entrées Végétariennes',
     items: [
-      { name: 'Samosas Maison', description: 'Pâte triangulaire croustillante dorée, farcie de légumes épicés.', priceMAD: 29.5 },
-      { name: 'Onion Bhaji', description: "Rondelles d'oignons émincées, mélangées à nos épices et frites minute.", priceMAD: 39.5 },
+      { name: 'Vegetable Samosa (2 pcs)', description: 'Pâtisserie indienne croustillante farcie de légumes aromatiques épicés.', priceMAD: 40 },
+      { name: 'Vegetable Pani Puri (6 pcs)', description: "Boules croustillantes farcies d'eau acidulée épicée et de chutneys.", priceMAD: 45 },
     ],
   },
   {
-    label: 'Plats Tandooris',
+    label: 'Spécialités Tandoori',
     items: [
-      { name: 'Chicken Tandoori', description: "Poulet entier mariné toute une nuit dans du yaourt et des épices tandoori, rôti au four d'argile.", priceMAD: 95 },
-      { name: 'Lamb Tikka', description: "Spécialité du Nord de l'Inde : tendres morceaux d'agneau marinés aux épices fines et grillés au charbon.", priceMAD: 99.5 },
+      { name: 'Tandoori Chicken', description: 'Poulet mariné aux épices et yaourt, grillé au four tandoor traditionnel.', priceMAD: 100 },
+      { name: 'Chicken Tikka', description: 'Brochettes de dés de poulet désossés marinés et cuits au tandoor.', priceMAD: 95 },
     ],
   },
   {
-    label: 'Biryani',
+    label: 'Hyderabadi Dum Biryani',
     items: [
-      { name: 'Chicken Biryani', description: 'Riz basmati longuement mijoté avec du poulet, safran et épices entières.', priceMAD: 89 },
+      { name: 'Lamb Biryani', description: "Riz basmati parfumé mi-cuit avec de l'agneau tendre et épices douces.", priceMAD: 110 },
+      { name: 'Chicken Biryani', description: "Spécialité d'Hyderabad : poulet et riz basmati cuits à l'étouffée.", priceMAD: 95 },
     ],
   },
   {
-    label: 'Pains Naan',
+    label: 'Plats Principaux',
     items: [
-      { name: 'Naan au Beurre', description: 'Pain traditionnel cuit minute au four tandoor, badigeonné de beurre.', priceMAD: 22 },
+      { name: 'Butter Chicken', description: 'Incontournable poulet mijoté dans une sauce veloutée au beurre et tomate.', priceMAD: 80 },
+      { name: 'Chicken Tikka Masala', description: 'Poulet tandoori grillé servi dans une sauce masala crémeuse.', priceMAD: 80 },
+    ],
+  },
+  {
+    label: 'Naan, Riz & Nouilles',
+    items: [
+      { name: 'Garlic Naan', description: 'Naan chaud parfumé à l\'ail frais haché et coriandre.', priceMAD: 29 },
+      { name: 'Cheese Naan', description: 'Pain tandoori moelleux généreusement fourré au fromage.', priceMAD: 35 },
+    ],
+  },
+  {
+    label: 'Boissons Fraîches',
+    items: [
+      { name: 'Mango Lassi', description: 'Boisson indienne onctueuse au yaourt et pulpe de mangue fraîche.', priceMAD: 40 },
     ],
   },
 ];
