@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../config/site.config';
+import { testimonials } from '../content/testimonials';
+
+const { primaryKeyword, name, city } = siteConfig.identity;
+const avg = (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1);
+
+// Individual Review + AggregateRating JSON-LD, on-domain — the standing note
+// in site.config.ts explains why: AI answer engines scan review PAGES for
+// recommendations, not just the Google Business Profile listing itself.
+const reviewsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name,
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: avg,
+    reviewCount: String(testimonials.length),
+  },
+  review: testimonials.map((t) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: t.name },
+    datePublished: t.date,
+    reviewRating: { '@type': 'Rating', ratingValue: String(t.rating), bestRating: '5' },
+    reviewBody: t.text,
+  })),
+};
+
+const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+---
+<Layout
+  title={`Avis clients — ${primaryKeyword} à ${city} | ${name}`}
+  description={`Ce que disent nos clients de ${name}, ${primaryKeyword} à ${city} : note moyenne ${avg}/5 sur ${testimonials.length} avis vérifiés.`}
+  path="/avis"
+  jsonLd={reviewsJsonLd}
+>
+  <section class="max-w-4xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-8">
+    <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">{city}</span>
+    <h1 class="font-display text-3xl sm:text-5xl font-semibold" style="color: var(--color-text-primary)">
+      Avis clients
+    </h1>
+    <p class="mt-4 text-lg" style="color: var(--color-accent)">
+      {stars(Math.round(Number(avg)))} <span style="color: var(--color-text-muted)">{avg}/5 · {testimonials.length} avis</span>
+    </p>
+    {siteConfig.social.googleReviewsUrl && (
+      <a href={siteConfig.social.googleReviewsUrl} target="_blank" rel="noreferrer" class="inline-block mt-3 text-sm font-bold" style="color: var(--color-accent)">
+        Voir tous les avis sur Google →
+      </a>
+    )}
+  </section>
+
+  <section class="max-w-4xl mx-auto px-5 sm:px-8 pb-20 grid sm:grid-cols-2 gap-5">
+    {testimonials.map((t) => (
+      <div class="rounded-xl p-5" style="background-color: var(--color-surface); border: 1px solid var(--color-border)">
+        <p class="text-sm" style="color: var(--color-accent)">{stars(t.rating)}</p>
+        <p class="mt-2 text-sm leading-relaxed" style="color: var(--color-text-primary)">"{t.text}"</p>
+        <p class="mt-3 text-xs font-bold" style="color: var(--color-text-muted)">
+          {t.name} · {new Date(t.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}
+        </p>
+      </div>
+    ))}
+  </section>
+
+  <section class="max-w-4xl mx-auto px-5 sm:px-8 pb-20 text-center">
+    <Button href="/menu" variant="filled">Découvrir le menu</Button>
+  </section>
+</Layout>

@@ -1,0 +1,52 @@
+---
+import { siteConfig } from '../config/site.config';
+import { orderCtaLabel } from '../lib/nav';
+import Button from './Button.astro';
+
+const nav = [
+  { href: '/', label: 'Accueil' },
+  { href: '/menu', label: 'Menu' },
+  { href: '/a-propos', label: 'À propos' },
+  { href: '/avis', label: 'Avis' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<footer style="background-color: var(--color-surface); border-top: 1px solid var(--color-border)">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14 grid sm:grid-cols-3 gap-10">
+    <div>
+      <span class="text-[11px] font-bold uppercase tracking-[0.2em]" style="color: var(--color-accent)">
+        {siteConfig.identity.city}
+      </span>
+      <h3 class="font-display text-2xl font-semibold mt-1.5" style="color: var(--color-text-primary)">
+        {siteConfig.identity.name}
+      </h3>
+      <p class="text-sm mt-2 max-w-xs" style="color: var(--color-text-muted)">
+        {siteConfig.identity.tagline}
+      </p>
+      <div class="mt-5">
+        <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+      </div>
+    </div>
+
+    <div class="space-y-3 text-sm" style="color: var(--color-text-muted)">
+      <p>{siteConfig.contact.address}</p>
+      <p><a href={siteConfig.contact.phoneHref} class="hover:underline">{siteConfig.contact.phoneDisplay}</a></p>
+      <p>{siteConfig.contact.openingHours}</p>
+    </div>
+
+    <nav class="flex flex-col gap-2.5 sm:items-end text-sm">
+      {nav.map((item) => (
+        <a href={item.href} style="color: var(--color-text-muted)" class="hover:underline">
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <div style="border-top: 1px solid var(--color-border)">
+    <p class="text-center text-[11px] py-4" style="color: var(--color-text-muted)">
+      {siteConfig.identity.name} · {new Date().getFullYear()} · Built by Amplify Growth Studio
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../config/site.config';
+import { orderCtaLabel } from '../lib/nav';
+
+const { primaryKeyword, name, city } = siteConfig.identity;
+---
+<Layout
+  title={`Contact & horaires — ${primaryKeyword} à ${city} | ${name}`}
+  description={`Adresse, téléphone et horaires de ${name}, ${primaryKeyword} à ${city}. ${siteConfig.contact.address}.`}
+  path="/contact"
+>
+  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-20 grid sm:grid-cols-2 gap-12">
+    <div>
+      <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">{city}</span>
+      <h1 class="font-display text-3xl sm:text-5xl font-semibold mb-8" style="color: var(--color-text-primary)">
+        Contact & horaires
+      </h1>
+
+      <div class="space-y-5 text-sm sm:text-base" style="color: var(--color-text-primary)">
+        <div>
+          <p class="font-bold text-xs uppercase tracking-wide" style="color: var(--color-text-muted)">Adresse</p>
+          <p class="mt-1">{siteConfig.contact.address}</p>
+        </div>
+        <div>
+          <p class="font-bold text-xs uppercase tracking-wide" style="color: var(--color-text-muted)">Téléphone</p>
+          <a href={siteConfig.contact.phoneHref} class="mt-1 inline-block hover:underline">{siteConfig.contact.phoneDisplay}</a>
+        </div>
+        <div>
+          <p class="font-bold text-xs uppercase tracking-wide" style="color: var(--color-text-muted)">Horaires</p>
+          <p class="mt-1">{siteConfig.contact.openingHours}</p>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+        {siteConfig.contact.mapsUrl && (
+          <Button href={siteConfig.contact.mapsUrl} external variant="filled">Itinéraire</Button>
+        )}
+      </div>
+    </div>
+
+    <div class="rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-auto" style="background-color: var(--color-surface); border: 1px solid var(--color-border)">
+      <img src="/images/interior-1.jpg" alt={`Intérieur du ${primaryKeyword} ${name}`} class="w-full h-full object-cover" />
+    </div>
+  </section>
+</Layout>

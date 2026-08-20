@@ -1,0 +1,44 @@
+---
+// Per-page SEO head partial. Every page passes its OWN title/description —
+// there is deliberately no site-wide default that pages silently inherit,
+// because that's exactly how duplicate/thin meta tags happen. `jsonLd` is
+// optional structured data (Restaurant, FAQPage, Review...) specific to
+// that page; pass an array to emit more than one block.
+import { siteConfig } from '../config/site.config';
+
+interface Props {
+  title: string; // must contain the primary keyword — see site.config.ts notes
+  description: string; // must ALSO contain the primary keyword
+  path: string; // e.g. '/menu' — used to build the canonical URL
+  ogImage?: string;
+  jsonLd?: object | object[];
+  noindex?: boolean; // reserved for future pages that shouldn't be indexed
+  // (thank-you pages, internal search results, ad landing pages) — see the
+  // standing note in site.config.ts. No page in this template needs it
+  // today; the flag exists so a future page can opt in without inventing
+  // a new pattern.
+}
+
+const { title, description, path, ogImage, jsonLd, noindex = false } = Astro.props;
+const canonical = new URL(path, siteConfig.identity.siteUrl).toString();
+const image = ogImage ? new URL(ogImage, siteConfig.identity.siteUrl).toString() : undefined;
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="restaurant.restaurant" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{image && <meta property="og:image" content={image} />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{image && <meta name="twitter:image" content={image} />}
+
+{jsonLdBlocks.map((block) => (
+  <script type="application/ld+json" set:html={JSON.stringify(block)} />
+))}

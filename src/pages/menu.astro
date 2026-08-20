@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../config/site.config';
+import { orderCtaLabel } from '../lib/nav';
+import { menuHighlights } from '../content/menu-highlights';
+
+const { primaryKeyword, name, city } = siteConfig.identity;
+
+const menuJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: `Menu — ${name}`,
+  hasMenuSection: menuHighlights.map((cat) => ({
+    '@type': 'MenuSection',
+    name: cat.label,
+    hasMenuItem: cat.items.map((item) => ({
+      '@type': 'MenuItem',
+      name: item.name,
+      description: item.description,
+      offers: { '@type': 'Offer', price: item.priceMAD, priceCurrency: 'MAD' },
+    })),
+  })),
+};
+---
+<Layout
+  title={`Menu — ${primaryKeyword} à ${city} | ${name}`}
+  description={`Découvrez le menu complet de ${name}, ${primaryKeyword} à ${city} : entrées, plats tandoori, biryani et pains naan. Commandez en ligne ou sur place.`}
+  path="/menu"
+  jsonLd={menuJsonLd}
+>
+  <section class="max-w-7xl mx-auto px-5 sm:px-8 pt-28 sm:pt-36 pb-8">
+    <span class="block text-[10px] font-bold uppercase tracking-[0.25em] mb-2" style="color: var(--color-accent)">{city}</span>
+    <h1 class="font-display text-3xl sm:text-5xl font-semibold" style="color: var(--color-text-primary)">
+      Le menu de notre {primaryKeyword}
+    </h1>
+    <p class="mt-4 max-w-2xl text-sm sm:text-base" style="color: var(--color-text-muted)">
+      Une sélection de nos plats signature. Le menu complet, avec toutes les options et suppléments, est disponible
+      au moment de la commande.
+    </p>
+    <div class="mt-6">
+      <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+    </div>
+  </section>
+
+  {menuHighlights.map((category) => (
+    <section class="max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-10">
+      <h2 class="font-display text-2xl font-semibold mb-5 pb-3" style="color: var(--color-text-primary); border-bottom: 1px solid var(--color-border)">
+        {category.label}
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {category.items.map((item) => (
+          <div class="flex items-start justify-between gap-4 rounded-xl p-4" style="background-color: var(--color-surface); border: 1px solid var(--color-border)">
+            <div>
+              <h3 class="font-display font-semibold" style="color: var(--color-text-primary)">{item.name}</h3>
+              <p class="text-sm mt-1" style="color: var(--color-text-muted)">{item.description}</p>
+            </div>
+            <span class="font-bold shrink-0" style="color: var(--color-accent)">{item.priceMAD} MAD</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <section class="max-w-7xl mx-auto px-5 sm:px-8 py-16 text-center">
+    <p class="text-sm mb-4" style="color: var(--color-text-muted)">Prêt à commander ?</p>
+    <Button href={orderCtaLabel.href} external>{orderCtaLabel.label}</Button>
+  </section>
+</Layout>

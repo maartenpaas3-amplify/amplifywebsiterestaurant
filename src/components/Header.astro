@@ -1,0 +1,134 @@
+---
+// Same header behavior as the order-landing-page engine's Header.tsx v3:
+// fully transparent at the top of the page (sits directly on the hero
+// photo, no bar), gains a blurred surface + border the moment you scroll,
+// plus a thin gold scroll-progress hairline. No React/framer-motion here —
+// it's a ~20-line vanilla script instead, since this is a static multi-page
+// site and shipping a JS framework runtime just for this would undercut the
+// entire reason this project is Astro (fast, crawlable, no hydration tax).
+//
+// Also unchanged from the order engine: no logo/icon, pure typographic
+// wordmark with an accent-colored lettrine — the studio's identity mark is
+// always type, never a raster file.
+import { siteConfig } from '../config/site.config';
+import { orderCtaLabel } from '../lib/nav';
+
+const nav = [
+  { href: '/', label: 'Accueil' },
+  { href: '/menu', label: 'Menu' },
+  { href: '/a-propos', label: 'À propos' },
+  { href: '/avis', label: 'Avis' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+<header id="site-header" class="sticky top-0 z-40 transition-all duration-300" data-scrolled="false">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-baseline min-w-0 shrink">
+      <span class="font-display font-bold text-2xl sm:text-[1.75rem] leading-none shrink-0" style="color: var(--color-accent)">
+        {siteConfig.identity.name.charAt(0)}
+      </span>
+      <span class="font-display font-semibold text-base sm:text-lg truncate ml-0.5" style="color: var(--color-text-primary)">
+        {siteConfig.identity.name.slice(1)}
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 shrink-0">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class="text-sm font-semibold transition-colors"
+          style={`color: ${currentPath === item.href ? 'var(--color-accent)' : 'var(--color-text-primary)'}`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href={orderCtaLabel.href}
+      target="_blank"
+      rel="noreferrer"
+      class="hidden sm:inline-flex items-center gap-1.5 text-sm font-bold shrink-0"
+      style="color: var(--color-accent)"
+    >
+      {orderCtaLabel.label} →
+    </a>
+
+    <!-- Mobile nav toggle -->
+    <button id="mobile-nav-toggle" class="md:hidden shrink-0" aria-label="Menu" aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--color-text-primary)">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav panel -->
+  <div id="mobile-nav-panel" class="md:hidden hidden flex-col px-4 pb-4" style="background-color: var(--color-surface)">
+    {nav.map((item) => (
+      <a href={item.href} class="py-2.5 text-sm font-semibold" style="color: var(--color-text-primary)">
+        {item.label}
+      </a>
+    ))}
+    <a
+      href={orderCtaLabel.href}
+      target="_blank"
+      rel="noreferrer"
+      class="mt-2 py-2.5 text-sm font-bold"
+      style="color: var(--color-accent)"
+    >
+      {orderCtaLabel.label} →
+    </a>
+  </div>
+
+  <div class="h-px w-full transition-colors duration-300" id="header-track">
+    <div id="header-progress" class="h-full" style="width: 0%; background-color: var(--color-accent)"></div>
+  </div>
+</header>
+
+<style>
+  #site-header {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+  }
+  #site-header[data-scrolled='true'] {
+    background-color: color-mix(in srgb, var(--color-surface) 95%, transparent);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  #header-track {
+    background-color: transparent;
+  }
+  #site-header[data-scrolled='true'] #header-track {
+    background-color: var(--color-border);
+  }
+  #mobile-nav-panel.open {
+    display: flex;
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const progress = document.getElementById('header-progress');
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const panel = document.getElementById('mobile-nav-panel');
+
+  function onScroll() {
+    if (!header || !progress) return;
+    const scrolled = window.scrollY > 8;
+    header.dataset.scrolled = String(scrolled);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    progress.style.width = `${pct * 100}%`;
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = panel?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+</script>
