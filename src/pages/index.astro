@@ -131,7 +131,12 @@ const ratingStars = '★'.repeat(ratingRounded) + '☆'.repeat(5 - ratingRounded
         loading="lazy"
       />
     </div>
-    <div class="absolute inset-0" style="background: linear-gradient(100deg, rgba(11,11,12,0.92) 0%, rgba(11,11,12,0.55) 42%, rgba(11,11,12,0.15) 68%, transparent 100%)"></div>
+    <!-- Scrim now leans warm instead of flat black — a subtle wine tint
+         mixed in via the same --color-primary-dark token as the footer
+         glow and the new warm section bands, so the "signature dish"
+         moment carries a touch of the order-engine's palette instead of
+         a generic dark gradient. -->
+    <div class="absolute inset-0" style="background: linear-gradient(100deg, color-mix(in srgb, var(--color-primary-dark) 30%, var(--color-background)) 0%, color-mix(in srgb, var(--color-primary-dark) 16%, rgba(11,11,12,0.55)) 42%, rgba(11,11,12,0.15) 68%, transparent 100%)"></div>
 
     <div class="relative z-10 h-full flex items-center max-w-7xl mx-auto px-5 sm:px-8">
       <div class="max-w-md">
@@ -202,7 +207,7 @@ const ratingStars = '★'.repeat(ratingRounded) + '☆'.repeat(5 - ratingRounded
        with dot controls. No fabricated customer photos — the monogram is
        honest (just the reviewer's first initial) rather than pretending we
        have portraits we don't. Pure vanilla JS, ~20 lines, no framework. -->
-  <section class="section-tint relative max-w-none px-0 py-16 sm:py-28 overflow-hidden" data-reveal>
+  <section class="section-tint-warm relative max-w-none px-0 py-16 sm:py-28 overflow-hidden" data-reveal>
     <div class="section-glow" style="width: 380px; height: 380px; background: var(--color-accent); opacity: 0.14; right: -140px; bottom: -60px;"></div>
 
     <div class="relative testimonial-carousel max-w-3xl mx-auto px-5 sm:px-8">

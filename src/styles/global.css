@@ -209,6 +209,21 @@ body {
   background-color: var(--color-surface);
 }
 
+/* Warm variant — pulls the deep wine-red from the order-engine's palette
+   (--color-primary-dark) into the marketing site instead of leaving
+   --color-primary parked at a 5% glow doing almost nothing. Mixed to 22%
+   against the background so it reads as "warm dark", not a red block —
+   same restraint as the rest of the site's motion-over-paint approach.
+   Swap in for `.section-tint` on food-forward sections (Menu, the
+   testimonial carousel) where the warmth actually fits; keep the neutral
+   `.section-tint` on editorial pages (À propos, Avis) so it stays a
+   deliberate accent, not a site-wide re-theme. Both read off the same
+   config-driven --color-primary-dark, so a future client swap in
+   site.config.ts's colors.primary changes this too, automatically. */
+.section-tint-warm {
+  background-color: color-mix(in srgb, var(--color-primary-dark) 22%, var(--color-background));
+}
+
 /* Menu item micro-interaction — a thin gold rule draws in under the dish
    name on hover/focus of its card, and the price gives a small nudge.
    Nothing fancy, but it's the difference between a menu that reads as a
