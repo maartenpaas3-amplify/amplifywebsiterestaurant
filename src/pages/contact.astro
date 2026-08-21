@@ -11,9 +11,20 @@ const { primaryKeyword, name, city } = siteConfig.identity;
 // "why us", the À propos stats, the FAQ categories) — Contact was the one
 // info block left as three identical label-over-value stacks with nothing
 // to anchor the eye.
+//
+// WhatsApp added as its own row — siteConfig.contact.whatsappNumber existed
+// but was never actually rendered anywhere on this page. For a lot of
+// visitors here, a quick WhatsApp message is the real first move, more
+// than calling — the data was already there, just unused.
 const infoItems = [
   { label: 'Adresse', value: siteConfig.contact.address, href: undefined, icon: 'M12 21s7-7.58 7-12A7 7 0 105 9c0 4.42 7 12 7 12z M12 11a2 2 0 100-4 2 2 0 000 4z' },
   { label: 'Téléphone', value: siteConfig.contact.phoneDisplay, href: siteConfig.contact.phoneHref, icon: 'M4 4h4l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v4a2 2 0 01-2 2A15 15 0 014 6a2 2 0 012-2z' },
+  {
+    label: 'WhatsApp',
+    value: siteConfig.contact.phoneDisplay,
+    href: `https://wa.me/${siteConfig.contact.whatsappNumber}`,
+    icon: 'M3 21l1.4-4.2A8 8 0 1110 19.6L3 21z M8 10c0 3 3 6 6 6',
+  },
   { label: 'Horaires', value: siteConfig.contact.openingHours, href: undefined, icon: 'M12 7v5l3 3 M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
 ];
 ---
@@ -22,19 +33,27 @@ const infoItems = [
   description={`Adresse, téléphone et horaires de ${name}, ${primaryKeyword} à ${city}. ${siteConfig.contact.address}.`}
   path="/contact"
 >
-  <PageHero kicker={city} title="Contact & horaires" image="/images/gallery-curries.jpg" alt={`Plats de ${name}`} />
+  <!-- This is the "how do I find you" page — it was opening with a plate of
+       curry instead of the actual building, which is backwards for a page
+       whose whole job is wayfinding. Interior shot instead (reused from
+       À propos; the honest limit here is a handful of real photos, and
+       reuse across pages beats a food photo that doesn't help anyone
+       recognize the place). -->
+  <PageHero kicker={city} title="Contact & horaires" image="/images/interior-1.jpg" alt={`Intérieur du ${primaryKeyword} ${name}`} />
 
-  <!-- Typographic moment instead of jumping straight from the photo hero
-       into a form-like two-column block — same unboxed pull-quote language
-       used on Home/Avis, single-sourced from siteConfig so it can't drift
-       from the real opening hours. -->
+  <!-- Pull-quote no longer repeats the opening hours verbatim — the info
+       list three lines down already states them exactly. Redundant text
+       isn't the same as visual rhythm; this now adds a real, verifiable
+       recognition cue instead (the neighborhood name and the storefront's
+       actual gold signage — both visible in the client's own photography,
+       not invented local color). -->
   <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-6" data-reveal>
     <p class="pull-quote max-w-2xl">
-      Une question, une envie de curry ce soir ? {siteConfig.contact.openingHours}.
+      Une question, une envie de curry ce soir ? On est dans le quartier Agdal, repérable à notre enseigne dorée.
     </p>
   </section>
 
-  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-4 pb-20 grid sm:grid-cols-2 gap-12">
+  <section class="max-w-5xl mx-auto px-5 sm:px-8 pt-4 pb-20 grid sm:grid-cols-2 gap-12 items-start">
     <div>
       <div class="space-y-5 text-sm sm:text-base" style="color: var(--color-text-primary)">
         {infoItems.map((item, i) => (
@@ -66,8 +85,13 @@ const infoItems = [
          on the site used to have — same color-mix token as the section
          bands, so the map doesn't sit as an isolated grey block next to
          text that's now part of the site's warmer rhythm. -->
+    <!-- Fixed aspect ratio instead of `sm:aspect-auto` stretching to match
+         the row height — with `items-start` on the grid above and a short
+         text column, that used to pull the map into an oversized, lopsided
+         block instead of a card the same visual weight as the text next to
+         it. -->
     <div
-      class="rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-auto"
+      class="rounded-2xl overflow-hidden aspect-[4/3]"
       style="background-color: color-mix(in srgb, var(--color-primary-dark) 10%, var(--color-surface)); border: 1px solid var(--color-border)"
       data-reveal
     >
