@@ -95,8 +95,14 @@ const currentPath = Astro.url.pathname;
     background-color: transparent;
     border-bottom: 1px solid transparent;
   }
+  /* Scrolled state now carries a touch of the same wine-red used in the
+     section bands below (color-mix'd into --color-surface first, then
+     that result mixed toward transparent for the blur) instead of being
+     the one part of the site that stays neutral grey no matter what page
+     you're on. Still subtle — this is the header, restraint matters most
+     here — but it means the "opening" moment ties back to the brand. */
   #site-header[data-scrolled='true'] {
-    background-color: color-mix(in srgb, var(--color-surface) 95%, transparent);
+    background-color: color-mix(in srgb, color-mix(in srgb, var(--color-primary-dark) 10%, var(--color-surface)) 95%, transparent);
     border-bottom-color: var(--color-border);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
