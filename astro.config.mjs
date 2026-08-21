@@ -25,4 +25,19 @@ export default defineConfig({
   // it's the single biggest technical reason this project is Astro and not
   // the same React/Vite stack as the order-landing-page engine.
   output: 'static',
+  // FR primary (unprefixed — keeps every existing /menu, /avis, etc. URL
+  // exactly as it was, no redirect, no lost SEO equity), EN and AR as
+  // opt-in translations under /en/ and /ar/. Mirrors the order-engine's
+  // Language type ('fr' | 'ar' | 'en', FR-required/others-optional) but
+  // implemented as real, separately-crawlable static pages instead of a
+  // client-side toggle — this site's whole architecture is built around
+  // being readable by non-JS crawlers (see the `output: 'static'` note
+  // above), so a JS-only language switch would quietly undo that for two
+  // of the three languages. `getRelativeLocaleUrl` from astro:i18n is what
+  // the header's language switcher uses to link between them.
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr', 'en', 'ar'],
+    routing: { prefixDefaultLocale: false },
+  },
 });
