@@ -52,7 +52,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
        "wow" moment before the page drops into the regular grid of shorter
        cards below, instead of every review getting equal, flat weight. -->
   {testimonials[0] && (
-    <section class="relative max-w-3xl mx-auto px-5 sm:px-8 pb-16 text-center overflow-hidden" data-reveal>
+    <section class="relative max-w-3xl mx-auto px-5 sm:px-8 pb-10 sm:pb-16 text-center overflow-hidden" data-reveal>
       <div class="section-glow" style="width: 360px; height: 360px; background: var(--color-accent); opacity: 0.08; left: -120px; top: -40px;"></div>
       <span class="relative font-display block text-6xl leading-none mb-2" style="color: var(--color-accent)">"</span>
       <p class="relative pull-quote -mt-6">{testimonials[0].text}</p>
@@ -69,30 +69,49 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 
   <Ornament />
 
-  <div class="section-tint">
-    <section class="max-w-4xl mx-auto px-5 sm:px-8 py-16 grid sm:grid-cols-2 gap-5">
-      {testimonials.slice(1).map((t, i) => (
-        <div
-          class="card-lift rounded-xl p-5"
-          style={`background-color: var(--color-surface-muted); border: 1px solid var(--color-border); transition-delay: ${i * 80}ms`}
-          data-reveal
-        >
-          <p class="text-sm" style="color: var(--color-accent)">{stars(t.rating)}</p>
-          <p class="mt-2 text-sm leading-relaxed" style="color: var(--color-text-primary)">"{t.text}"</p>
-          <p class="mt-3 text-xs font-bold" style="color: var(--color-text-muted)">
-            {t.name} · {new Date(t.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}
-            {t.sourceUrl && (
-              <a href={t.sourceUrl} target="_blank" rel="noreferrer" class="ml-1 font-normal underline" style="color: var(--color-text-muted)">
-                (Tripadvisor)
-              </a>
-            )}
-          </p>
-        </div>
-      ))}
+  <!-- Warm variant instead of the neutral grey tint — Avis is the trust
+       page, it earns some of the same wine-red warmth we brought into
+       Menu and Home rather than staying the one page still on plain grey.
+       Cards also alternate background + monogram ring color (gold /
+       bordeaux) so a single mobile column reads as a rhythm instead of
+       five identical grey boxes stacked on top of each other, and each
+       card gets the same initial-monogram treatment as the Home carousel
+       so a name isn't just floating text with nothing to anchor it. -->
+  <div class="section-tint-warm">
+    <section class="max-w-4xl mx-auto px-5 sm:px-8 pt-16 pb-10 sm:pb-16 grid sm:grid-cols-2 gap-5">
+      {testimonials.slice(1).map((t, i) => {
+        const warm = i % 2 === 1;
+        return (
+          <div
+            class="card-lift rounded-xl p-5 flex gap-4"
+            style={`background-color: ${warm ? 'color-mix(in srgb, var(--color-primary-dark) 12%, var(--color-surface-muted))' : 'var(--color-surface-muted)'}; border: 1px solid var(--color-border); transition-delay: ${i * 80}ms`}
+            data-reveal
+          >
+            <span
+              class="shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full font-display font-bold text-sm"
+              style={`background: var(--color-surface); border: 1.5px solid ${warm ? 'var(--color-primary)' : 'var(--color-accent)'}; color: ${warm ? 'var(--color-primary)' : 'var(--color-accent)'}`}
+            >
+              {t.name.charAt(0)}
+            </span>
+            <div class="min-w-0">
+              <p class="text-sm" style="color: var(--color-accent)">{stars(t.rating)}</p>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--color-text-primary)">"{t.text}"</p>
+              <p class="mt-3 text-xs font-bold" style="color: var(--color-text-muted)">
+                {t.name} · {new Date(t.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' })}
+                {t.sourceUrl && (
+                  <a href={t.sourceUrl} target="_blank" rel="noreferrer" class="ml-1 font-normal underline" style="color: var(--color-text-muted)">
+                    (Tripadvisor)
+                  </a>
+                )}
+              </p>
+            </div>
+          </div>
+        );
+      })}
     </section>
   </div>
 
-  <section class="max-w-4xl mx-auto px-5 sm:px-8 py-20 text-center">
+  <section class="max-w-4xl mx-auto px-5 sm:px-8 pt-10 pb-20 sm:pt-20 text-center">
     <Button href="/menu" variant="filled">Découvrir le menu</Button>
   </section>
 </Layout>

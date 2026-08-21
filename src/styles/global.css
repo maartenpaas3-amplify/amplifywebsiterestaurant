@@ -102,6 +102,17 @@ body {
   border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
+/* Touch devices never trigger :hover, so every .card-lift on the site was
+   completely static once its scroll-reveal finished — no feedback at all
+   when the majority of visitors (on a phone) actually tap a card. This
+   gives a small, real press-state instead of nothing. `(hover: none)`
+   keeps it out of the way of desktop's hover lift so the two don't fight. */
+@media (hover: none) {
+  .card-lift:active {
+    transform: scale(0.98);
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  }
+}
 
 /* Ken Burns — a continuous, very slow zoom on a full-bleed photo (the
    signature-dish spotlight on Home). No video asset available, so this is
