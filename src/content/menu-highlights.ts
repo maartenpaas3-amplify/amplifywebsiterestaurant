@@ -15,6 +15,17 @@ export interface MenuHighlightItem {
   name: string;
   description: string;
   priceMAD: number;
+  // Per-DISH photo — this is now the default template pattern, not a
+  // one-off for this client: a menu that shows what the food actually
+  // looks like sells harder than a menu that only names it, and buyers
+  // scanning a category banner photo above six unrelated items (the old
+  // design) can't tell which dish is which. Same honesty rule as the
+  // category `image` below applies at the item level too — only set this
+  // when a real, accurate photo of THIS exact dish exists. An item with no
+  // photo just renders as a text-only row; that's the correct fallback,
+  // never substitute a photo of a different dish to fill the gap.
+  image?: string;
+  imageAlt?: string;
 }
 export interface MenuHighlightCategory {
   label: string;
@@ -33,19 +44,21 @@ export interface MenuHighlightCategory {
 
 export const menuHighlights: MenuHighlightCategory[] = [
   {
+    // No category-level banner here anymore — now that both items below
+    // have their own accurate dish photo, a generic category banner on
+    // top would just repeat the same food a second time. Category banners
+    // stay for the categories below that DON'T have per-item photos yet.
     label: 'Entrées Végétariennes',
-    image: '/images/gallery-spread.jpg',
-    imageAlt: 'Pani puri et entrées indiennes servies en accompagnement',
     items: [
-      { name: 'Vegetable Samosa (2 pcs)', description: 'Pâtisserie indienne croustillante farcie de légumes aromatiques épicés.', priceMAD: 40 },
-      { name: 'Vegetable Pani Puri (6 pcs)', description: "Boules croustillantes farcies d'eau acidulée épicée et de chutneys.", priceMAD: 45 },
+      { name: 'Vegetable Samosa (2 pcs)', description: 'Pâtisserie indienne croustillante farcie de légumes aromatiques épicés.', priceMAD: 40, image: '/images/dish-samosa.jpg', imageAlt: 'Deux samosas végétariens croustillants avec sauce tamarin' },
+      { name: 'Vegetable Pani Puri (6 pcs)', description: "Boules croustillantes farcies d'eau acidulée épicée et de chutneys.", priceMAD: 45, image: '/images/dish-pani-puri.jpg', imageAlt: 'Pani puri garnis de pommes de terre, pois chiches et coriandre' },
     ],
   },
   {
     label: 'Spécialités Tandoori',
     items: [
-      { name: 'Tandoori Chicken', description: 'Poulet mariné aux épices et yaourt, grillé au four tandoor traditionnel.', priceMAD: 100 },
-      { name: 'Chicken Tikka', description: 'Brochettes de dés de poulet désossés marinés et cuits au tandoor.', priceMAD: 95 },
+      { name: 'Tandoori Chicken', description: 'Poulet mariné aux épices et yaourt, grillé au four tandoor traditionnel.', priceMAD: 100, image: '/images/dish-tandoori-chicken.jpg', imageAlt: 'Cuisses de poulet tandoori grillées, servies avec oignons et citron' },
+      { name: 'Chicken Tikka', description: 'Brochettes de dés de poulet désossés marinés et cuits au tandoor.', priceMAD: 95, image: '/images/dish-chicken-tikka.jpg', imageAlt: 'Brochettes de chicken tikka grillées, garnies de coriandre fraîche' },
     ],
   },
   {

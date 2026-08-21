@@ -95,11 +95,16 @@ const menuJsonLd = {
             <div class="grid sm:grid-cols-2 gap-4">
               {category.items.map((item, j) => (
                 <div
-                  class="card-lift flex items-start justify-between gap-4 rounded-xl p-4"
+                  class="card-lift flex items-start gap-4 rounded-xl p-4"
                   style={`background-color: ${i % 2 === 1 ? 'color-mix(in srgb, var(--color-primary-dark) 14%, var(--color-surface-muted))' : 'var(--color-surface)'}; border: 1px solid var(--color-border); transition-delay: ${j * 70}ms`}
                   data-reveal
                 >
-                  <div>
+                  {item.image && (
+                    <div class="photo-frame shrink-0 rounded-lg overflow-hidden w-16 h-16 sm:w-20 sm:h-20">
+                      <img src={item.image} alt={item.imageAlt ?? item.name} class="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                  )}
+                  <div class="min-w-0 flex-1">
                     <h3 class="menu-item-name font-display font-semibold" style="color: var(--color-text-primary)">{item.name}</h3>
                     <p class="text-sm mt-1" style="color: var(--color-text-muted)">{item.description}</p>
                   </div>
